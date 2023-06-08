@@ -29,6 +29,7 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - [Chat API](#chat-api)
 - [Team API](#team-api)
 - [Endpoints](#endpoints)
+- [TODO](#todo)
 
 ### Install
 
@@ -406,3 +407,4 @@ Responses are all of the format `application/json`
 - Saving prompts for sharing/reuse
 - Example web app or api usage
 - Basic SDKs for js, go, etc
+- More documentation!!!
