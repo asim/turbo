@@ -241,7 +241,7 @@ It takes standard POST requests and returns JSON responses.
 - `/chat/index` - lists all chats for a given user (returns `chats` as an array)
 - `/chat/read` - provides chat history, takes `id` as param (returns `chat` and `messages` array)
 - `/chat/prompt` - make a request using `prompt` command and `id` (returns `reply` text and store in db)
-- `/chat/stream` - stream via SSE or websockets using `ChatID` and `token` as params`
+- `/chat/stream` - stream via SSE or websockets using chat `id` and `token` as params`
 - `/chat/user/add` with `chat_id` and `user_id`
 - `/chat/user/remove` with `chat_id` and `user_id`
 
