@@ -182,6 +182,7 @@ func main() {
 		// check arg length
 		if len(args) != 2 {
 			fmt.Println("Missing username and password")
+			return
 		}
 
 		if err := ResetPassword(args[0], args[1]); err != nil {
