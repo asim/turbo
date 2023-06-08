@@ -1,10 +1,10 @@
 # Proxy GPT
 
-A proxy for OpenAI GPT usage
+A GPT backend powered by OpenAI
 
 ## Overview
 
-This is a proxy for the OpenAI API. All requests are forwarded using a shared key. The requests are logged in a database for 
+This is a GPT backend for the OpenAI API. All requests are forwarded using a shared key. The requests are logged in a database for 
 filtering, auditing, etc. It's a standard Go program that can be deployed anywhere using sqlite or a postgres database for persistence.
 
 ## Features
@@ -13,7 +13,7 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - User authentication
 - 1:1 and 1:N Chat API
 - SQLite or Postgres storage
-- In-memory or Redis Caching
+- In-memory or Redis caching
 - Proxy request and event log
 - Prompt context cache forwarding
 
