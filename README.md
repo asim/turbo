@@ -23,8 +23,8 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - [API](#api)
 - [Auth](#auth)
 - [Admin](#admin)
+- [Context](#context)
 - [Database](#database)
-- [Redis](#redis)
 - [User API](#user-api)
 - [Chat API](#chat-api)
 - [Team API](#team-api)
@@ -119,6 +119,19 @@ Reset password
 admin reset foobar Password1
 ```
 
+### Context
+
+Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
+the `context` field set to an integer above 0. The cache is built from the database of prior messages if no context is in 
+memory. 
+
+Redis can be used as an alternative persistent cache. This will enable horizontally scaling the proxy alongside the use of 
+the external database like postgres. To do so specify the `REDIS_ADDRESS` env var with the connection string.
+
+```
+REDIS_ADDRESS=redis://localhost:6379
+```
+
 ### Database
 
 Events are stored in a database. Sqlite is used by default (local proxy.db file).
@@ -150,19 +163,6 @@ GRANT ALL ON SCHEMA public to gptio;
 - team_members - team members by id
 - users - user login information
 - sessions - current login sessions
-
-### Redis
-
-Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
-the `context` field set to an integer above 0. The cache is built from the database of prior messages if no context is in 
-memory. 
-
-Redis can be used as an alternative persistent cache. This will enable horizontally scaling the proxy alongside the use of 
-the external database like postgres. To do so specify the `REDIS_ADDRESS` env var with the connection string.
-
-```
-REDIS_ADDRESS=redis://localhost:6379
-```
 
 ### User API
 
