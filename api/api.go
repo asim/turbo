@@ -51,7 +51,7 @@ var (
 var (
 	// Excludes paths from authentication / logging request-response
 	Excludes = []string{
-		"/user/register",
+		"/user/signup",
 		"/user/login",
 		"/user/logout",
 		"/user/password/update",

@@ -108,8 +108,6 @@ func ResetPassword(username, password string) error {
 func main() {
 	flag.Parse()
 	args := flag.Args()
-	// strip first arg
-	args = args[1:]
 
 	// initialise db connection
 	if err := db.Init(*Database); err != nil {
@@ -117,7 +115,7 @@ func main() {
 		return
 	}
 
-	usage := "admin [--database=xxx] [--username=xxx] [--password=xxx] {list|reset|user|messages|chatUsers|deleteMessage}"
+	usage := "admin {list|reset|user|messages|chatUsers|deleteMessage}"
 
 	// return
 	if len(args) == 0 {

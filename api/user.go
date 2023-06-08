@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/mail"
 	"strings"
 	"time"
 
@@ -50,11 +49,11 @@ type UserIndexResponse struct {
 // Need to create team from first+last name
 type UserSignupRequest struct {
 	// 	ID created in backend
-	FirstName string `json:"first_name" valid:"length(1|30)"`
-	LastName  string `json:"last_name" valid:"length(1|30)"`
-	Username  string `json:"username" valid:"required,username,length(6|254)" gorm:"unique_index;not null"`
+	FirstName string `json:"first_name,omitempty"`
+	LastName  string `json:"last_name,omitempty"`
+	Username  string `json:"username" valid:"required,length(1|254)" gorm:"unique_index;not null"`
 	Password  string `json:"password" valid:"required"`
-	TeamName  string `json:"team_name" valid:"required,length(1|254)"`
+	TeamName  string `json:"team_name,omitempty"`
 }
 
 // UserSignupResponse for user/register
@@ -64,20 +63,15 @@ type UserSignupResponse struct {
 	User  User   `json:"User"`
 }
 
-// UserCreateRequest for user/create
-// TODO: validate username
-type UserCreateRequest struct {
-	// 	ID created in backend
-	FirstName string `json:"first_name" valid:"length(1|30)"`
-	LastName  string `json:"last_name" valid:"length(1|30)"`
-	Username  string `json:"username" valid:"required,username,length(6|254)" gorm:"unique_index;not null"`
-	Password  string `json:"password" valid:"required"`
-	Team      Team   `json:"team"`
-}
-
 // UserReadRequest for user/read
 type UserReadRequest struct {
 	ID string `json:"id" valid:"required"`
+}
+
+// UserReadResponse full user with id
+// Response for user/create, user/read & user/update
+type UserReadResponse struct {
+	User User `json:"user"`
 }
 
 // UserUpdateRequest for user/update
@@ -91,12 +85,6 @@ type UserUpdateRequest struct {
 
 type UserUpdateResponse struct{}
 
-// UserReadResponse full user with id
-// Response for user/create, user/read & user/update
-type UserReadResponse struct {
-	User User `json:"user"`
-}
-
 // UserDeleteRequest for deleting
 type UserDeleteRequest struct {
 	ID string `json:"id" valid:"required"`
@@ -107,7 +95,7 @@ type UserDeleteResponse struct{}
 
 // UserLoginRequest struct for auth/login
 type UserLoginRequest struct {
-	Username string `json:"username" valid:"required,length(4|254)"` // currently username
+	Username string `json:"username" valid:"required,length(1|254)"` // currently username
 	Password string `json:"password" valid:"required"`               // ^[a-z0-9@.-_+]+$ - no validation
 }
 
@@ -160,13 +148,8 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	// username is username
 	username := lr.Username
 
-	// validate username
-	if _, err := mail.ParseAddress(username); err != nil {
-		http.Error(w, "Invalid username", http.StatusInternalServerError)
-		return
-	}
-
 	user := new(User)
+	user.Username = lr.Username
 
 	// check exists
 	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
@@ -486,7 +469,7 @@ func UserSignup(w http.ResponseWriter, r *http.Request) {
 	user, err = CreateUser(user)
 	if err != nil {
 		http.Error(w, "Failed to signup user: "+err.Error(), http.StatusInternalServerError)
-		log.Print("Failed to signup", user.Username, err.Error())
+		log.Print("Failed to signup", ur.Username, err.Error())
 		return
 	}
 

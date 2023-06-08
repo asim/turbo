@@ -1,4 +1,5 @@
 proxy.db
+proxy.db-journal
 proxy-gpt
 proxy.log
 .env
