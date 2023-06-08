@@ -185,14 +185,6 @@ curl http://localhost:8080/user/signup \
 -d "username=asim&password=bazbar"
 ```
 
-Fields to set
-
-- `username` - valid username
-- `password` - valid password
-- `first_name` - first name of user (optional)
-- `last_name` - last name of user (optional)
-- `redirect_url` - where to send after successful signup (optional)
-
 #### Login
 
 Login via `/user/login` with post form data. Will set the cookie `sess` with an opaque token and return as json
@@ -201,12 +193,6 @@ Login via `/user/login` with post form data. Will set the cookie `sess` with an 
 curl -vv http://localhost:8080/user/login \
 -d "username=asim&password=bazbar"
 ```
-
-Fields to set
-
-- `username` - valid username
-- `password` - valid password
-- `redirect_url` - where to send after successful signup (optional)
 
 #### Logout
 
