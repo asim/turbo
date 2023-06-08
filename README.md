@@ -284,7 +284,7 @@ Send a message to the chat
 
 ```
 curl http://localhost:8080/chat/prompt \
--d "chat_id=chat-1&prompt=tell+me+about+spain"
+-d "id=chat-1&prompt=tell+me+about+spain"
 ```
 
 The request will be made inline and response provided
@@ -297,14 +297,15 @@ Messages will be streamed over the `/chat/stream` endpoint which you can separat
 subscribe to using server sent events or websockets.
 
 ```
-Example TODO
+curl http://localhost:8080/chat/stream \
+-d 'id=chat-1'
 ```
 
 Specify `id` for the chat ID you want to stream from. Messages will be received in the 
 format below. Where `partial` is set to true, this is the partial response of separated 
 words from the model. When this is set to false, the full message will be present.
 
-Stream essage format
+Stream message format
 
 ```
 {
@@ -316,7 +317,7 @@ Stream essage format
 ### Off the record
 
 Send messages to the chat which are not sent to the AI but used as context 
-later with the `otr=bool` flag to `/chat/prompt`.
+later with the `otr=true` flag to `/chat/prompt`.
 
 ## Team API
 

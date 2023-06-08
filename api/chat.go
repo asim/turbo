@@ -98,7 +98,7 @@ type ChatReadResponse struct {
 }
 
 type ChatPromptRequest struct {
-	ChatID  string `json:"chat_id" valid:"required"`
+	ID      string `json:"id" valid:"required"`
 	Prompt  string `json:"prompt" valid:"required"`
 	Context int    `json:"context,omitempty"`
 	Stream  bool   `json:"stream,omitempty"`
@@ -545,7 +545,7 @@ func ChatPrompt(w http.ResponseWriter, r *http.Request) {
 
 	// parse the request
 	c := new(ChatPromptRequest)
-	c.ChatID = r.Form.Get("chat_id")
+	c.ID = r.Form.Get("id")
 	c.Prompt = r.Form.Get("prompt")
 
 	if v := r.Form.Get("context"); len(v) > 0 {
@@ -575,7 +575,7 @@ func ChatPrompt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	chatID := c.ChatID
+	chatID := c.ID
 	prompt := c.Prompt
 
 	// validate the chat
@@ -836,8 +836,8 @@ func ChatStream(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c := new(ChatReadRequest)
-	c.ID = r.Form.Get("chat_id")
+	c := new(ChatStreamRequest)
+	c.ID = r.Form.Get("id")
 
 	if err := decode(r, c); err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
