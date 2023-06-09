@@ -31,7 +31,6 @@ filtering, auditing, etc.
 - [Chat API](#chat-api)
 - [Group API](#group-api)
 - [Endpoints](#endpoints)
-- [TODO](#todo)
 
 ### Install
 
