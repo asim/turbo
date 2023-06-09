@@ -1,11 +1,12 @@
 # Proxy GPT
 
-A GPT backend powered by OpenAI
+Team based GPT backend API
 
 ## Overview
 
-This is a GPT backend for the OpenAI API. All requests are forwarded using a shared key. The requests are logged in a database for 
-filtering, auditing, etc. It's a standard Go program that can be deployed anywhere using sqlite or a postgres database for persistence.
+Proxy GPT is a team based GPT backend for the ChatGPT API. It enables you to create teams and group chat, perform user signup and authentication, 
+and includes a full chat API for prompting and streaming responses. All requests are forwarded using a shared key. Requests are logged in a database for 
+filtering, auditing, etc. 
 
 ## Features
 
@@ -16,6 +17,7 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - In-memory or Redis caching
 - Proxy request and event log
 - Prompt context cache forwarding
+- Websocket and SSE support 
 
 ## Usage
 
@@ -185,14 +187,6 @@ curl http://localhost:8080/user/signup \
 -d "username=asim&password=bazbar"
 ```
 
-Fields to set
-
-- `username` - valid username
-- `password` - valid password
-- `first_name` - first name of user (optional)
-- `last_name` - last name of user (optional)
-- `redirect_url` - where to send after successful signup (optional)
-
 #### Login
 
 Login via `/user/login` with post form data. Will set the cookie `sess` with an opaque token and return as json
@@ -201,12 +195,6 @@ Login via `/user/login` with post form data. Will set the cookie `sess` with an 
 curl -vv http://localhost:8080/user/login \
 -d "username=asim&password=bazbar"
 ```
-
-Fields to set
-
-- `username` - valid username
-- `password` - valid password
-- `redirect_url` - where to send after successful signup (optional)
 
 #### Logout
 
@@ -255,7 +243,7 @@ It takes standard POST requests and returns JSON responses.
 - `/chat/index` - lists all chats for a given user (returns `chats` as an array)
 - `/chat/read` - provides chat history, takes `id` as param (returns `chat` and `messages` array)
 - `/chat/prompt` - make a request using `prompt` command and `id` (returns `reply` text and store in db)
-- `/chat/stream` - stream via SSE or websockets using `ChatID` and `token` as params`
+- `/chat/stream` - stream via SSE or websockets using chat `id` and `token` as params`
 - `/chat/user/add` with `chat_id` and `user_id`
 - `/chat/user/remove` with `chat_id` and `user_id`
 
