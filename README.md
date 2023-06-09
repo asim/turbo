@@ -16,6 +16,7 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - In-memory or Redis caching
 - Proxy request and event log
 - Prompt context cache forwarding
+- Websocket and SSE support 
 
 ## Usage
 
