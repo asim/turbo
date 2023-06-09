@@ -4,7 +4,8 @@ Team based GPT backend API
 
 ## Overview
 
-This is a GPT backend for the OpenAI API. All requests are forwarded using a shared key. The requests are logged in a database for 
+Proxy GPT is a team based GPT backend for the ChatGPT API. It enables you to create teams and group chat, perform user signup and authentication, 
+and includes a full chat API for prompting and streaming responses. All requests are forwarded using a shared key. Requests are logged in a database for 
 filtering, auditing, etc. It's a standard Go program that can be deployed anywhere using sqlite or a postgres database for persistence.
 
 ## Features
