@@ -159,7 +159,7 @@ GRANT ALL ON SCHEMA public to gptio;
 
 - chats - stores the chat history
 - chat_users - users in the chat by id
-- Events - proxy events/requests/login/etc
+- events - proxy events/requests/login/etc
 - messages - message history within chats
 - groups - all the group information
 - group_members - group members by id
