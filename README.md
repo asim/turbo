@@ -304,8 +304,8 @@ Stream message format
 
 ### Off the record
 
-Send messages to the chat which are not sent to the AI but used as context 
-later with the `otr=true` flag to `/chat/prompt`.
+Send messages to the chat which are not sent to the AI or used as context 
+later with the `otr=true` field when calling `/chat/prompt`.
 
 ## Group API
 
