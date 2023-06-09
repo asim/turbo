@@ -147,7 +147,7 @@ func main() {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println(chat.ID, chat.Name, chat.UserID, chat.TeamID)
+		fmt.Println(chat.ID, chat.Name, chat.UserID, chat.GroupID)
 	case "chatUsers":
 		id := args[1]
 		users, err := ListChatUsers(id)

@@ -27,15 +27,15 @@ var (
 		"/chat/user/add":    ChatUserAdd,
 		"/chat/user/remove": ChatUserRemove,
 
-		// team apis
-		"/team/create":         TeamCreate,
-		"/team/delete":         TeamDelete,
-		"/team/read":           TeamRead,
-		"/team/update":         TeamUpdate,
-		"/team/index":          TeamIndex,
-		"/team/members":        TeamMembers,
-		"/team/members/add":    TeamMembersAdd,
-		"/team/members/remove": TeamMembersRemove,
+		// group apis
+		"/group/create":         GroupCreate,
+		"/group/delete":         GroupDelete,
+		"/group/read":           GroupRead,
+		"/group/update":         GroupUpdate,
+		"/group/index":          GroupIndex,
+		"/group/members":        GroupMembers,
+		"/group/members/add":    GroupMembersAdd,
+		"/group/members/remove": GroupMembersRemove,
 
 		// register a user apis
 		"/user/signup":          UserSignup,

@@ -31,13 +31,13 @@ type User struct {
 	LastName  string `json:"last_name" valid:"length(1|30)"`
 	Username  string `json:"username" valid:"required,username,length(6|254)" gorm:"unique_index;not null"`
 	Password  string `json:"-"`
-	Teams     []Team `json:"teams" gorm:"many2many:user_teams;"`
+	Groups     []Group `json:"groups" gorm:"many2many:user_groups;"`
 }
 
 // UserIndexRequest for user/index
 // TODO: worry about pagination later.
 type UserIndexRequest struct {
-	TeamID uint `json:"team_id" valid:"length(1|30)"`
+	GroupID uint `json:"group_id" valid:"length(1|30)"`
 }
 
 // UserIndexResponse for user/index
@@ -46,14 +46,14 @@ type UserIndexResponse struct {
 }
 
 // UserSignupRequest for user/register
-// Need to create team from first+last name
+// Need to create group from first+last name
 type UserSignupRequest struct {
 	// 	ID created in backend
 	FirstName string `json:"first_name,omitempty"`
 	LastName  string `json:"last_name,omitempty"`
 	Username  string `json:"username" valid:"required,length(1|254)" gorm:"unique_index;not null"`
 	Password  string `json:"password" valid:"required"`
-	TeamName  string `json:"team_name,omitempty"`
+	GroupName  string `json:"group_name,omitempty"`
 }
 
 // UserSignupResponse for user/register
@@ -175,26 +175,26 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// lookup teams
-	var teamIDs []TeamMember
-	if err := db.Where("user_id = ?", user.ID).Find(&teamIDs).Error; err != nil {
+	// lookup groups
+	var groupIDs []GroupMember
+	if err := db.Where("user_id = ?", user.ID).Find(&groupIDs).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	var ids []string
-	for _, o := range teamIDs {
-		ids = append(ids, o.TeamID)
+	for _, o := range groupIDs {
+		ids = append(ids, o.GroupID)
 	}
 
-	var teams []Team
-	if err := db.Where("id IN ?", ids).Find(&teams).Error; err != nil {
+	var groups []Group
+	if err := db.Where("id IN ?", ids).Find(&groups).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// set user teams
-	user.Teams = teams
+	// set user groups
+	user.Groups = groups
 
 	// set a session cookie
 	http.SetCookie(w, &http.Cookie{
@@ -356,26 +356,26 @@ func UserSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// lookup teams
-	var teamIDs []TeamMember
-	if err := db.Where("user_id = ?", user.ID).Find(&teamIDs).Error; err != nil {
+	// lookup groups
+	var groupIDs []GroupMember
+	if err := db.Where("user_id = ?", user.ID).Find(&groupIDs).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	var ids []string
-	for _, o := range teamIDs {
-		ids = append(ids, o.TeamID)
+	for _, o := range groupIDs {
+		ids = append(ids, o.GroupID)
 	}
 
-	var teams []Team
-	if err := db.Where("id IN ?", ids).Find(&teams).Error; err != nil {
+	var groups []Group
+	if err := db.Where("id IN ?", ids).Find(&groups).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// set user teams
-	user.Teams = teams
+	// set user groups
+	user.Groups = groups
 
 	respond(w, r, &UserSessionResponse{
 		User: user,
@@ -415,26 +415,26 @@ func UserRead(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// lookup teams
-	var teamIDs []TeamMember
-	if err := db.Where("user_id = ?", user.ID).Find(&teamIDs).Error; err != nil {
+	// lookup groups
+	var groupIDs []GroupMember
+	if err := db.Where("user_id = ?", user.ID).Find(&groupIDs).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	var ids []string
-	for _, o := range teamIDs {
-		ids = append(ids, o.TeamID)
+	for _, o := range groupIDs {
+		ids = append(ids, o.GroupID)
 	}
 
-	var teams []Team
-	if err := db.Where("id IN ?", ids).Find(&teams).Error; err != nil {
+	var groups []Group
+	if err := db.Where("id IN ?", ids).Find(&groups).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// set user teams
-	user.Teams = teams
+	// set user groups
+	user.Groups = groups
 
 	respond(w, r, &UserReadResponse{
 		User: user,
@@ -448,7 +448,7 @@ func UserSignup(w http.ResponseWriter, r *http.Request) {
 	ur.LastName = r.Form.Get("last_name")
 	ur.Username = r.Form.Get("username")
 	ur.Password = r.Form.Get("password")
-	ur.TeamName = r.Form.Get("team_name")
+	ur.GroupName = r.Form.Get("group_name")
 
 	if err := decode(r, ur); err != nil {
 		http.Error(w, "Invalid request", http.StatusInternalServerError)
@@ -477,35 +477,35 @@ func UserSignup(w http.ResponseWriter, r *http.Request) {
 
 	// We've generated a user, now we create their own
 	// This is new registration flow, meaning the user
-	// is signing up themselves and generating a new team
+	// is signing up themselves and generating a new group
 	// In the event they're joining an existing or that's
-	// an invite to the team, not new user registration
+	// an invite to the group, not new user registration
 
-	// if no team name use personal
-	if len(ur.TeamName) == 0 {
-		ur.TeamName = "Personal"
+	// if no group name use personal
+	if len(ur.GroupName) == 0 {
+		ur.GroupName = "Personal"
 	}
 
-	// Create new team
-	team := Team{
+	// Create new group
+	group := Group{
 		ID:      uuid.New().String(),
-		Name:    ur.TeamName,
+		Name:    ur.GroupName,
 		OwnerID: user.ID,
 	}
 
-	// Save team to database
-	if err := db.Create(&team).Error; err != nil {
+	// Save group to database
+	if err := db.Create(&group).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// great, we have an team!
-	user.Teams = append(user.Teams, team)
+	// great, we have an group!
+	user.Groups = append(user.Groups, group)
 
-	// create team member
-	if err := AddUserToTeam(&TeamMember{
-		TeamID: team.ID,
-		UserID: team.OwnerID,
+	// create group member
+	if err := AddUserToGroup(&GroupMember{
+		GroupID: group.ID,
+		UserID: group.OwnerID,
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -589,7 +589,7 @@ func UserUpdate(w http.ResponseWriter, r *http.Request) {
 	respond(w, r, &UserUpdateResponse{})
 }
 
-func AddUserToTeam(om *TeamMember) error {
+func AddUserToGroup(om *GroupMember) error {
 	if err := db.Create(&om).Error; err != nil {
 		return err
 	}

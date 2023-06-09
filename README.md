@@ -27,7 +27,7 @@ filtering, auditing, etc. It's a standard Go program that can be deployed anywhe
 - [Database](#database)
 - [User API](#user-api)
 - [Chat API](#chat-api)
-- [Team API](#team-api)
+- [Group API](#group-api)
 - [Endpoints](#endpoints)
 - [TODO](#todo)
 
@@ -159,8 +159,8 @@ GRANT ALL ON SCHEMA public to gptio;
 - chat_users - users in the chat by id
 - Events - proxy events/requests/login/etc
 - messages - message history within chats
-- teams - all the team information
-- team_members - team members by id
+- groups - all the group information
+- group_members - group members by id
 - users - user login information
 - sessions - current login sessions
 
@@ -319,29 +319,29 @@ Stream message format
 Send messages to the chat which are not sent to the AI but used as context 
 later with the `otr=true` flag to `/chat/prompt`.
 
-## Team API
+## Group API
 
-The team API enables you to create organisations that have their own members and chats.
+The group API enables you to create organisations that have their own members and chats.
 
-### Create a team
+### Create a group
 
 ```
-curl http://localhost:8080/team/create \
--d "name=foobar&description=my+awesome+team"
+curl http://localhost:8080/group/create \
+-d "name=foobar&description=my+awesome+group"
 ```
 
 ### Add a member
 
 ```
-curl http://localhost:8080/team/members/add \
--d "team_id=team-1&user_ids=user-1"
+curl http://localhost:8080/group/members/add \
+-d "group_id=group-1&user_ids=user-1"
 ```
 
-### Create a team chat
+### Create a group chat
 
 ```
 curl http://localhost:8080/chat/create \
--d "name=foobar&team_id=team-1"
+-d "name=foobar&group_id=group-1"
 ```
 
 ## Endpoints
@@ -360,15 +360,15 @@ A full list of API endpoints
 "/chat/user/add":    ChatUserAdd,
 "/chat/user/remove": ChatUserRemove,
 
-// team api
-"/team/create":         TeamCreate,
-"/team/delete":         TeamDelete,
-"/team/read":           TeamRead,
-"/team/update":         TeamUpdate,
-"/team/index":          TeamIndex,
-"/team/members":        TeamMembers,
-"/team/members/add":    TeamMembersAdd,
-"/team/members/remove": TeamMembersRemove,
+// group api
+"/group/create":         GroupCreate,
+"/group/delete":         GroupDelete,
+"/group/read":           GroupRead,
+"/group/update":         GroupUpdate,
+"/group/index":          GroupIndex,
+"/group/members":        GroupMembers,
+"/group/members/add":    GroupMembersAdd,
+"/group/members/remove": GroupMembersRemove,
 
 // user api
 "/user/signup":          UserSignup,

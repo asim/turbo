@@ -54,10 +54,10 @@ func main() {
 		&api.User{},
 		// user sessions
 		&api.Session{},
-		// teams
-		&api.Team{},
-		// team members
-		&api.TeamMember{},
+		// groups
+		&api.Group{},
+		// group members
+		&api.GroupMember{},
 	)
 
 	// setup the cache

@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// Team who users are members of
-type Team struct {
+// Group who users are members of
+type Group struct {
 	gorm.Model
 	ID          string `json:"id" valid:"required"`
 	Name        string `json:"name" valid:"length(1|30)"`
@@ -18,97 +18,97 @@ type Team struct {
 	OwnerID     string `json:"owner_id" gorm:"index"`
 }
 
-type TeamMember struct {
+type GroupMember struct {
 	gorm.Model
-	TeamID string `json:"team_id" gorm:"index:idx_team_member_team_user"`
-	UserID string `json:"user_id" gorm:"index:idx_team_member_team_user"`
+	GroupID string `json:"group_id" gorm:"index:idx_group_member_group_user"`
+	UserID string `json:"user_id" gorm:"index:idx_group_member_group_user"`
 }
 
-// TeamIndexRequest for team/index
-// Get token for userID and list all teams that user is in
-// This is overkill as users will only have one team to start with but worth building for future
-type TeamIndexRequest struct{}
+// GroupIndexRequest for group/index
+// Get token for userID and list all groups that user is in
+// This is overkill as users will only have one group to start with but worth building for future
+type GroupIndexRequest struct{}
 
-// TeamIndexResponse for team/index
-type TeamIndexResponse struct {
-	Teams []Team `json:"teams"`
+// GroupIndexResponse for group/index
+type GroupIndexResponse struct {
+	Groups []Group `json:"groups"`
 }
 
-// TeamCreateRequest for team/create
-type TeamCreateRequest struct {
+// GroupCreateRequest for group/create
+type GroupCreateRequest struct {
 	Name        string   `json:"name" valid:"length(1|30)"`
 	Description string   `json:"description" valid:"length(1|256)"`
 	Members     []string `json:"members"`
 }
 
-// TeamReadRequest for team/read
-type TeamReadRequest struct {
+// GroupReadRequest for group/read
+type GroupReadRequest struct {
 	ID string `json:"id" valid:"required"`
 }
 
-type TeamReadResponse struct {
-	Team
+type GroupReadResponse struct {
+	Group
 }
 
-// TeamUpdateRequest for team/update
-type TeamUpdateRequest struct {
+// GroupUpdateRequest for group/update
+type GroupUpdateRequest struct {
 	ID          string `json:"id" valid:"required"`
 	Name        string `json:"name" valid:"length(1|30)"`
 	Description string `json:"description" valid:"length(1|256)"`
 }
 
-// TeamUpdateResponse for team/update
-type TeamUpdateResponse struct {
-	Team
+// GroupUpdateResponse for group/update
+type GroupUpdateResponse struct {
+	Group
 }
 
-type TeamMembersInviteRequest struct {
+type GroupMembersInviteRequest struct {
 	Username string `json:"username" valid:"required,length(6|254)"`
-	TeamID   string `json:"team_id" valid:"required,length(1|254)"`
+	GroupID   string `json:"group_id" valid:"required,length(1|254)"`
 }
 
-type TeamMembersInviteResponse struct{}
+type GroupMembersInviteResponse struct{}
 
-// TeamMembersRequest for team/users
-// returns all users in an team
-type TeamMembersRequest struct {
+// GroupMembersRequest for group/users
+// returns all users in an group
+type GroupMembersRequest struct {
 	ID string `json:"id" valid:"required"`
 }
 
-// TeamUsersResponse for team/users
-type TeamMembersResponse struct {
+// GroupUsersResponse for group/users
+type GroupMembersResponse struct {
 	Users []User `json:"users"`
 }
 
-// TeamUsersCreateRequest for team/users/create
-// adds a users to an team.
+// GroupUsersCreateRequest for group/users/create
+// adds a users to an group.
 // TODO: permissions
-type TeamMembersAddRequest struct {
+type GroupMembersAddRequest struct {
 	ID      string   `json:"id" valid:"required,length(1|254)"`
 	UserIDs []string `json:"user_ids"`
 }
 
-type TeamMembersAddResponse struct{}
+type GroupMembersAddResponse struct{}
 
-type TeamMembersRemoveRequest struct {
+type GroupMembersRemoveRequest struct {
 	ID      string   `json:"id" valid:"required,length(1|254)"`
 	UserIDs []string `json:"user_ids"`
 }
 
-type TeamMembersRemoveResponse struct{}
+type GroupMembersRemoveResponse struct{}
 
-type TeamDeleteRequest struct {
+type GroupDeleteRequest struct {
 	ID string `json:"id" valid:"required"`
 }
 
-type TeamDeleteResponse struct {
-	Team Team `json:"team"`
+type GroupDeleteResponse struct {
+	Group Group `json:"group"`
 }
 
-func TeamCreate(w http.ResponseWriter, r *http.Request) {
+func GroupCreate(w http.ResponseWriter, r *http.Request) {
 	// Parse form and fill request with form values
 	r.ParseForm()
-	req := TeamCreateRequest{
+	req := GroupCreateRequest{
 		Name:        r.Form.Get("name"),
 		Description: r.Form.Get("description"),
 		Members:     r.Form["members"],
@@ -128,24 +128,24 @@ func TeamCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	team := Team{
+	group := Group{
 		ID:          uuid.New().String(),
 		Name:        req.Name,
 		Description: req.Description,
 		OwnerID:     sess.UserID,
 	}
 
-	// create new team
-	if err := CreateTeam(&team); err != nil {
+	// create new group
+	if err := CreateGroup(&group); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Respond with created team
-	respond(w, r, team)
+	// Respond with created group
+	respond(w, r, group)
 }
 
-func TeamDelete(w http.ResponseWriter, r *http.Request) {
+func GroupDelete(w http.ResponseWriter, r *http.Request) {
 	// Check user session
 	sess, ok := r.Context().Value(Session{}).(*Session)
 	if !ok {
@@ -157,7 +157,7 @@ func TeamDelete(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	// Decode request
-	var req TeamDeleteRequest
+	var req GroupDeleteRequest
 	req.ID = r.Form.Get("id")
 
 	if err := decode(r, &req); err != nil {
@@ -165,39 +165,39 @@ func TeamDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check if user is an team owner
-	var team Team
-	if err := db.Where("id = ?", req.ID).First(&team).Error; err != nil {
+	// Check if user is an group owner
+	var group Group
+	if err := db.Where("id = ?", req.ID).First(&group).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// check ownership
-	if team.OwnerID != sess.UserID {
+	if group.OwnerID != sess.UserID {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	// delete all team members
-	if err := db.Where("team_id = ?", team.ID).Delete(&TeamMember{}).Error; err != nil {
+	// delete all group members
+	if err := db.Where("group_id = ?", group.ID).Delete(&GroupMember{}).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Delete team
-	if err := db.Delete(&team).Error; err != nil {
+	// Delete group
+	if err := db.Delete(&group).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Respond with TeamDeleteResponse
-	respond(w, r, TeamDeleteResponse{Team: team})
+	// Respond with GroupDeleteResponse
+	respond(w, r, GroupDeleteResponse{Group: group})
 }
 
-func TeamMembers(w http.ResponseWriter, r *http.Request) {
+func GroupMembers(w http.ResponseWriter, r *http.Request) {
 	// Parse form and fill request with form values
 	r.ParseForm()
-	req := TeamMembersRequest{
+	req := GroupMembersRequest{
 		ID: r.Form.Get("id"),
 	}
 
@@ -207,10 +207,10 @@ func TeamMembers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get all members of the team
-	var members []TeamMember
+	// Get all members of the group
+	var members []GroupMember
 
-	if err := db.Model(&TeamMember{}).Where("team_id = ?", req.ID).Find(&members).Error; err != nil {
+	if err := db.Model(&GroupMember{}).Where("group_id = ?", req.ID).Find(&members).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -228,13 +228,13 @@ func TeamMembers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Respond with list of members
-	respond(w, r, TeamMembersResponse{Users: memberDetails})
+	respond(w, r, GroupMembersResponse{Users: memberDetails})
 }
 
-func TeamRead(w http.ResponseWriter, r *http.Request) {
+func GroupRead(w http.ResponseWriter, r *http.Request) {
 	// Parse form and fill request with form values
 	r.ParseForm()
-	req := TeamReadRequest{
+	req := GroupReadRequest{
 		ID: r.Form.Get("id"),
 	}
 
@@ -244,21 +244,21 @@ func TeamRead(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get team from database
-	var team Team
-	if err := db.Where("id = ?", req.ID).First(&team).Error; err != nil {
-		http.Error(w, "team not found", 404)
+	// Get group from database
+	var group Group
+	if err := db.Where("id = ?", req.ID).First(&group).Error; err != nil {
+		http.Error(w, "group not found", 404)
 		return
 	}
 
-	// Respond with team
-	respond(w, r, TeamReadResponse{Team: team})
+	// Respond with group
+	respond(w, r, GroupReadResponse{Group: group})
 }
 
-func TeamUpdate(w http.ResponseWriter, r *http.Request) {
+func GroupUpdate(w http.ResponseWriter, r *http.Request) {
 	// Parse form and fill request with form values
 	r.ParseForm()
-	req := TeamUpdateRequest{
+	req := GroupUpdateRequest{
 		ID:          r.Form.Get("id"),
 		Name:        r.Form.Get("name"),
 		Description: r.Form.Get("description"),
@@ -277,37 +277,37 @@ func TeamUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get team from database
-	var team Team
-	if err := db.Where("id = ?", req.ID).First(&team).Error; err != nil {
-		http.Error(w, "team not found", 404)
+	// Get group from database
+	var group Group
+	if err := db.Where("id = ?", req.ID).First(&group).Error; err != nil {
+		http.Error(w, "group not found", 404)
 		return
 	}
 
 	// check the owner matches
-	if team.OwnerID != sess.UserID {
+	if group.OwnerID != sess.UserID {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	// Update team with new name
-	team.Name = req.Name
-	team.Description = req.Description
+	// Update group with new name
+	group.Name = req.Name
+	group.Description = req.Description
 
-	// Save team to database
-	if err := db.Update(&team).Error; err != nil {
+	// Save group to database
+	if err := db.Update(&group).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Respond with updated team
-	respond(w, r, TeamUpdateResponse{Team: team})
+	// Respond with updated group
+	respond(w, r, GroupUpdateResponse{Group: group})
 }
 
-func TeamMembersAdd(w http.ResponseWriter, r *http.Request) {
+func GroupMembersAdd(w http.ResponseWriter, r *http.Request) {
 	// Parse form and fill request with form values
 	r.ParseForm()
-	req := TeamMembersAddRequest{
+	req := GroupMembersAddRequest{
 		ID:      r.Form.Get("id"),
 		UserIDs: r.Form["user_ids"],
 	}
@@ -325,37 +325,37 @@ func TeamMembersAdd(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get the team by ID
-	var team Team
-	if err := db.Where("id = ?", req.ID).First(&team).Error; err != nil {
-		http.Error(w, "Team not found", http.StatusNotFound)
+	// Get the group by ID
+	var group Group
+	if err := db.Where("id = ?", req.ID).First(&group).Error; err != nil {
+		http.Error(w, "Group not found", http.StatusNotFound)
 		return
 	}
 
 	// check owner matches
-	if team.OwnerID != sess.UserID {
+	if group.OwnerID != sess.UserID {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
 		return
 	}
 
-	// Add new members to team
+	// Add new members to group
 	for _, userID := range req.UserIDs {
-		teamMember := TeamMember{
-			TeamID: team.ID,
+		groupMember := GroupMember{
+			GroupID: group.ID,
 			UserID: userID,
 		}
 
-		if err := db.Create(&teamMember).Error; err != nil {
+		if err := db.Create(&groupMember).Error; err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
 	// Respond with success
-	respond(w, r, TeamMembersAddResponse{})
+	respond(w, r, GroupMembersAddResponse{})
 }
 
-func TeamIndex(w http.ResponseWriter, r *http.Request) {
+func GroupIndex(w http.ResponseWriter, r *http.Request) {
 	// Check user session
 	sess, ok := r.Context().Value(Session{}).(*Session)
 	if !ok {
@@ -363,32 +363,32 @@ func TeamIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get all TeamMembers for the current user
-	var teamMembers []TeamMember
-	if err := db.Where("user_id = ?", sess.UserID).Find(&teamMembers).Error; err != nil {
+	// Get all GroupMembers for the current user
+	var groupMembers []GroupMember
+	if err := db.Where("user_id = ?", sess.UserID).Find(&groupMembers).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	teamIDs := make([]string, len(teamMembers))
-	for i, om := range teamMembers {
-		teamIDs[i] = om.TeamID
+	groupIDs := make([]string, len(groupMembers))
+	for i, om := range groupMembers {
+		groupIDs[i] = om.GroupID
 	}
 
-	// Get Teams for each TeamMember
-	var teams []Team
-	if len(teamIDs) > 0 {
-		if err := db.Where("id IN (?)", teamIDs).Find(&teams).Error; err != nil {
+	// Get Groups for each GroupMember
+	var groups []Group
+	if len(groupIDs) > 0 {
+		if err := db.Where("id IN (?)", groupIDs).Find(&groups).Error; err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
-	// Respond with TeamIndexResponse
-	respond(w, r, TeamIndexResponse{Teams: teams})
+	// Respond with GroupIndexResponse
+	respond(w, r, GroupIndexResponse{Groups: groups})
 }
 
-func TeamMembersRemove(w http.ResponseWriter, r *http.Request) {
+func GroupMembersRemove(w http.ResponseWriter, r *http.Request) {
 	// Check user session
 	sess, ok := r.Context().Value(Session{}).(*Session)
 	if !ok {
@@ -397,7 +397,7 @@ func TeamMembersRemove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get request parameters
-	var req TeamMembersRemoveRequest
+	var req GroupMembersRemoveRequest
 	req.ID = r.Form.Get("id")
 	req.UserIDs = strings.Split(r.Form.Get("user_id"), ",")
 
@@ -412,25 +412,25 @@ func TeamMembersRemove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get team
-	var team Team
-	if err := db.First(&team, "id = ?", req.ID).Error; err != nil {
+	// Get group
+	var group Group
+	if err := db.First(&group, "id = ?", req.ID).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Get team member being deleted
-	var teamMembers []TeamMember
-	if err := db.Where("team_id = ?", req.ID).Find(&teamMembers).Error; err != nil {
+	// Get group member being deleted
+	var groupMembers []GroupMember
+	if err := db.Where("group_id = ?", req.ID).Find(&groupMembers).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Check if user is team owner
-	if team.OwnerID != sess.UserID {
-		// not team owner
+	// Check if user is group owner
+	if group.OwnerID != sess.UserID {
+		// not group owner
 		// can only remove self
-		// must check if is team member
+		// must check if is group member
 
 		// user can only remove the themselves
 		if len(req.UserIDs) > 1 {
@@ -444,9 +444,9 @@ func TeamMembersRemove(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// check if is an team member
+		// check if is an group member
 		var isMember bool
-		for _, member := range teamMembers {
+		for _, member := range groupMembers {
 			if member.UserID == sess.UserID {
 				isMember = true
 				break
@@ -459,81 +459,81 @@ func TeamMembersRemove(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// cannot delete members if there's only one left
-	if len(teamMembers) <= 1 {
-		http.Error(w, "team requires at least 1 member", http.StatusInternalServerError)
+	if len(groupMembers) <= 1 {
+		http.Error(w, "group requires at least 1 member", http.StatusInternalServerError)
 		return
 	}
 
 	// cannot remove owner
 	for _, id := range req.UserIDs {
-		if id == team.OwnerID {
-			http.Error(w, "cannot delete team owner", http.StatusBadRequest)
+		if id == group.OwnerID {
+			http.Error(w, "cannot delete group owner", http.StatusBadRequest)
 			return
 		}
 	}
 
-	// Delete team members
-	if err := db.Where("team_id = ? AND user_id IN (?)", team.ID, req.UserIDs).Delete(&TeamMember{}).Error; err != nil {
+	// Delete group members
+	if err := db.Where("group_id = ? AND user_id IN (?)", group.ID, req.UserIDs).Delete(&GroupMember{}).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	respond(w, r, TeamMembersRemoveResponse{})
+	respond(w, r, GroupMembersRemoveResponse{})
 }
 
-func CreateTeam(team *Team) error {
-	if len(team.ID) == 0 {
-		team.ID = uuid.New().String()
+func CreateGroup(group *Group) error {
+	if len(group.ID) == 0 {
+		group.ID = uuid.New().String()
 	}
 
-	// Save team to database
-	if err := db.Create(team).Error; err != nil {
+	// Save group to database
+	if err := db.Create(group).Error; err != nil {
 		return err
 	}
 
-	teamMember := TeamMember{
-		TeamID: team.ID,
-		UserID: team.OwnerID,
+	groupMember := GroupMember{
+		GroupID: group.ID,
+		UserID: group.OwnerID,
 	}
 
-	if err := db.Create(&teamMember).Error; err != nil {
+	if err := db.Create(&groupMember).Error; err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func GetTeamByID(id string) (*Team, error) {
-	var team Team
-	team.ID = id
-	if err := db.First(&team).Error; err != nil {
+func GetGroupByID(id string) (*Group, error) {
+	var group Group
+	group.ID = id
+	if err := db.First(&group).Error; err != nil {
 		return nil, err
 	}
-	return &team, nil
+	return &group, nil
 }
 
-func GetTeam(userID string) (*Team, error) {
-	var teamMember TeamMember
-	if err := db.Where("user_id = ?", userID).First(&teamMember).Error; err != nil {
+func GetGroup(userID string) (*Group, error) {
+	var groupMember GroupMember
+	if err := db.Where("user_id = ?", userID).First(&groupMember).Error; err != nil {
 		return nil, err
 	}
 
-	var team Team
-	team.ID = teamMember.TeamID
-	if err := db.First(&team).Error; err != nil {
+	var group Group
+	group.ID = groupMember.GroupID
+	if err := db.First(&group).Error; err != nil {
 		return nil, err
 	}
-	return &team, nil
+	return &group, nil
 }
 
-func IsInTeam(teamID, userID string) bool {
-	// Get all members of the team
-	var member TeamMember
+func IsInGroup(groupID, userID string) bool {
+	// Get all members of the group
+	var member GroupMember
 
-	if err := db.Where("team_id = ? AND user_id = ?", teamID, userID).First(&member).Error; err != nil {
+	if err := db.Where("group_id = ? AND user_id = ?", groupID, userID).First(&member).Error; err != nil {
 		return false
 	}
 
 	// check it matches
-	return member.UserID == userID && member.TeamID == teamID
+	return member.UserID == userID && member.GroupID == groupID
 }

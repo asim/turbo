@@ -31,7 +31,7 @@ type Chat struct {
 	Name   string `json:"name" valid:"required"` // name of the chat given by the user
 	LLM    string `json:"model" valid:"required"`
 	UserID string `json:"user_id" gorm:"index:idx_chat_user,priority:1"`
-	TeamID string `json:"team_id" gorm:"index"` // TODO new composite index with user
+	GroupID string `json:"group_id" gorm:"index"` // TODO new composite index with user
 }
 
 // Message represents the messages in a Chat
@@ -40,7 +40,7 @@ type Message struct {
 	ID     string `json:"id" valid:"required"`
 	ChatID string `json:"chat_id" gorm:"index:idx_chat_message,priority:2"`
 	UserID string `json:"user_id" gorm:"index:idx_chat_message,priority:1"`
-	TeamID string `json:"team_id" gorm:"index"`
+	GroupID string `json:"group_id" gorm:"index"`
 	Prompt string `json:"prompt"`
 	Reply  string `json:"reply"`
 	LLM    string `json:"model"`
@@ -50,7 +50,7 @@ type Message struct {
 type ChatCreateRequest struct {
 	Name   string `json:"name" valid:"required"`
 	Model  string `json:"model" valid:"required"`
-	TeamID string `json:"team_id"`
+	GroupID string `json:"group_id"`
 }
 
 type ChatCreateResponse struct {
@@ -154,7 +154,7 @@ func ChatCreate(w http.ResponseWriter, r *http.Request) {
 	cc := new(ChatCreateRequest)
 	cc.Name = r.Form.Get("name")
 	cc.Model = r.Form.Get("model")
-	cc.TeamID = r.Form.Get("team_id")
+	cc.GroupID = r.Form.Get("group_id")
 
 	if err := decode(r, cc); err != nil {
 		http.Error(w, "Invalid request", http.StatusBadRequest)
@@ -180,14 +180,14 @@ func ChatCreate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var team *Team
+	var group *Group
 
-	if len(cc.TeamID) > 0 {
+	if len(cc.GroupID) > 0 {
 		// lookup members
-		var teamMember TeamMember
-		err := db.Where("user_id = ? AND team_id = ?", sess.UserID, cc.TeamID).First(&teamMember).Error
+		var groupMember GroupMember
+		err := db.Where("user_id = ? AND group_id = ?", sess.UserID, cc.GroupID).First(&groupMember).Error
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			// user is not a member of the team
+			// user is not a member of the group
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
 		} else if err != nil {
@@ -195,20 +195,20 @@ func ChatCreate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var og Team
-		og.ID = cc.TeamID
+		var og Group
+		og.ID = cc.GroupID
 
 		if err := db.First(&og).Error; err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// set team
-		team = &og
+		// set group
+		group = &og
 	} else {
 		var err error
-		// get the user team
-		team, err = GetTeam(sess.UserID)
+		// get the user group
+		group, err = GetGroup(sess.UserID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -220,7 +220,7 @@ func ChatCreate(w http.ResponseWriter, r *http.Request) {
 		ID:     uuid.New().String(),
 		Name:   cc.Name,
 		LLM:    cc.Model,
-		TeamID: team.ID,
+		GroupID: group.ID,
 		UserID: sess.UserID,
 	}
 
@@ -625,7 +625,7 @@ func ChatPrompt(w http.ResponseWriter, r *http.Request) {
 		Prompt: prompt,
 		ChatID: chatID,
 		UserID: sess.UserID,
-		TeamID: chat.TeamID,
+		GroupID: chat.GroupID,
 		LLM:    chat.LLM,
 		OTR:    c.OTR,
 	}
