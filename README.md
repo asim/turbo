@@ -1,6 +1,6 @@
 # Proxy GPT
 
-Group based ChatGPT backend API
+Group based ChatGPT backend
 
 ## Overview
 
