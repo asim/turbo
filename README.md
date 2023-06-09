@@ -1,6 +1,6 @@
 # Proxy GPT
 
-A GPT backend powered by OpenAI
+Team based GPT backend API
 
 ## Overview
 
