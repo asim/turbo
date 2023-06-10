@@ -16,7 +16,7 @@ filtering, auditing, etc.
 - SQLite or Postgres storage
 - In-memory or Redis caching
 - Proxy request and event log
-- Prompt context cache forwarding
+- Prompt context forwarding
 - Websocket and SSE support 
 
 ## Usage
