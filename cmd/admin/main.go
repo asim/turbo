@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 
 	"github.com/asim/proxy-gpt/api"
 	"github.com/asim/proxy-gpt/db"
@@ -11,7 +12,8 @@ import (
 
 var (
 	// The backend database to connect to
-	Database = flag.String("database", "", "")
+	// Database = flag.String("database", "", "")
+	Database = os.Getenv("DB_ADDRESS")
 )
 
 func GetChat(id string) (api.Chat, error) {
@@ -105,17 +107,48 @@ func ResetPassword(username, password string) error {
 	return nil
 }
 
+func CreateUser(username, password string) error {
+	if len(username) == 0 || len(password) == 0 {
+		return fmt.Errorf("missing username or password")
+	}
+
+	user := new(api.User)
+	user.Username = username
+
+	// check exists
+	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
+		pw, err := util.GetHash(password)
+		if err != nil {
+			return err
+		}
+
+		user.Password = pw
+
+		fmt.Println(user.Username, user.Password)
+
+		// write the user
+		if err := db.Update(&user).Error; err != nil {
+			return err
+		}
+	} else {
+		return fmt.Errorf("user already exist")
+	}
+
+	return nil
+}
+
 func main() {
 	flag.Parse()
 	args := flag.Args()
 
 	// initialise db connection
-	if err := db.Init(*Database); err != nil {
+	// if err := db.Init(*Database); err != nil {
+	if err := db.Init(Database); err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	usage := "admin {list|reset|user|messages|chatUsers|deleteMessage}"
+	usage := "admin {create|list|reset|user|messages|chatUsers|deleteMessage}"
 
 	// return
 	if len(args) == 0 {
@@ -186,6 +219,20 @@ func main() {
 		}
 
 		if err := ResetPassword(args[0], args[1]); err != nil {
+			fmt.Println(err)
+			return
+		}
+	case "create":
+		// strip command
+		args = args[1:]
+
+		// check arg length
+		if len(args) != 2 {
+			fmt.Println("Missing username and password")
+			return
+		}
+
+		if err := CreateUser(args[0], args[1]); err != nil {
 			fmt.Println(err)
 			return
 		}
