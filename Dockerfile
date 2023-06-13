@@ -1,21 +1,14 @@
-FROM alpine:3.20 as builder
-
-COPY --from=golang:1.20-alpine /usr/local/go/ /usr/local/go/
-ENV PATH="/usr/local/go/bin:${PATH}"
-RUN apk --no-cache add make git gcc libtool musl-dev
-
-COPY go.mod .
-COPY go.sum .
+FROM golang:1.20-alpine as builder
+RUN apk --no-cache add gcc g++ libtool musl-dev
+WORKDIR /app
+COPY . .
 RUN go mod download
-COPY . /
-RUN make; rm -rf $GOPATH/pkg/mod
+RUN export CGO_ENABLED=1; export CC=gcc; go build -ldflags="-linkmode=external -s -w" -o proxy-gpt main.go
+RUN export CGO_ENABLED=1; export CC=gcc; go build -ldflags="-linkmode=external -s -w" -o admin cmd/admin/main.go
 
-FROM alpine:3.20
-COPY --from=golang:1.20-alpine /usr/local/go/ /usr/local/go/
-ENV PATH="/usr/local/go/bin:${PATH}"
-
-RUN apk --no-cache add make git gcc libtool musl-dev
+FROM alpine:latest
 RUN apk --no-cache add ca-certificates && rm -rf /var/cache/apk/* /tmp/* 
-
-COPY --from=builder /proxy-gpt /proxy-gpt
-ENTRYPOINT ["/proxy-gpt"]
+WORKDIR /app
+COPY --from=builder /app/proxy-gpt .
+COPY --from=builder /app/admin .
+ENTRYPOINT ["./proxy-gpt"]
