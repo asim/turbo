@@ -1,6 +1,6 @@
 # Proxy GPT
 
-AI based group chat API
+Proxy for OpenAI
 
 ## Overview
 
