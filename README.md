@@ -4,7 +4,7 @@ Group based ChatGPT API backend
 
 ## Overview
 
-Proxy GPT is a group based GPT backend for the ChatGPT API. It enables you to create teams and group chat, perform user signup and authentication, 
+Proxy GPT is a group based API backend for the ChatGPT API. It enables you to create teams and group chat, perform user signup and authentication, 
 and includes a full chat API for prompting and streaming responses. All requests are forwarded using a shared key. Requests are logged in a database for 
 filtering, auditing, etc. 
 
