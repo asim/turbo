@@ -100,7 +100,7 @@ See the [User API](#user-api) section for more on signup, login, etc.
 
 A user admin command line is available in `cmd/admin`
 
-It requires access to the database via the `--database` flag (if postgres is used)
+It requires access to the database via the `DB_ADDRESS` env var (if postgres is used)
 
 List users
 

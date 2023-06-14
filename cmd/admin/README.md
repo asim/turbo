@@ -4,11 +4,12 @@ Some helper tools
 
 ## Usage
 
-Requires `--database` flag for postgres usage (postgres://host:address/database string)
+Requires `DB_ADDRESS` env var for postgres usage (postgres://host:address/database string)
 
 ### Commands
 
 ```
+create - create a user
 user - get a user by id
 list - list all the users
 chat - get a chat by id
@@ -23,6 +24,9 @@ reset - reset username/password
 ```
 # list users
 admin list
+
+# create a user
+admin create [username] [password]
 
 # get user by id
 admin user [userID]
