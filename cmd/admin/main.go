@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -8,6 +9,8 @@ import (
 	"github.com/asim/proxy-gpt/api"
 	"github.com/asim/proxy-gpt/db"
 	"github.com/asim/proxy-gpt/util"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 var (
@@ -112,26 +115,26 @@ func CreateUser(username, password string) error {
 		return fmt.Errorf("missing username or password")
 	}
 
+	pw, err := util.GetHash(password)
+	if err != nil {
+		return err
+	}
+
 	user := new(api.User)
+	user.ID = uuid.New().String()
 	user.Username = username
+	user.Password = pw
 
 	// check exists
-	if err := db.Where("username = ?", username).First(&user).Error; err != nil {
-		pw, err := util.GetHash(password)
-		if err != nil {
-			return err
-		}
+	if err := db.Where("username = ?", user.Username).First(&api.User{}).Error; err == nil {
+		return fmt.Errorf("User exists")
+	} else if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
 
-		user.Password = pw
-
-		fmt.Println(user.Username, user.Password)
-
-		// write the user
-		if err := db.Update(&user).Error; err != nil {
-			return err
-		}
-	} else {
-		return fmt.Errorf("user already exist")
+	// write the db record
+	if err := db.Create(user).Error; err != nil {
+		return err
 	}
 
 	return nil
