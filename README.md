@@ -143,7 +143,7 @@ DB_ADDRESS=postgresql://user:pass@localhost:5432/proxy
 
 #### Privileges
 
-Requires the following privileges assuming user is `asim`
+Requires the following privileges assuming db user is `gptio`
 
 ```
 create database proxy;
