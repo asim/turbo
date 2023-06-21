@@ -1,6 +1,6 @@
 # Turbo 🌀
 
-Turbocharge your API backend with AI
+Turbocharge your backend with AI
 
 ## Overview
 
