@@ -4,7 +4,7 @@ Turbocharge your API backend with AI
 
 ## Overview
 
-Proxy GPT is an API backend with AI built-in. Create users, groups and chats, perform signup and authentication, including prompting and streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Requests are stored in a database for filtering, auditing, etc.
+Proxy GPT is an API backend with AI built-in. Create users, groups and chats, perform signup and authentication. It includes prompting and streaming responses via ChatGPT. All requests are forwarded using a shared key with context caching included by default. Requests are stored in a database for filtering, auditing, etc.
 
 ## Features
 
