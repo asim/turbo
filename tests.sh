@@ -31,7 +31,7 @@ if ! [ -f ./turbo ]; then
 fi
 
 # run proxy
-API_KEY=$KEY ./turbo &
+OPENAI_API_KEY=$KEY ./turbo &
 PID=$!
 
 # sleep

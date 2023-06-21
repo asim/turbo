@@ -15,7 +15,7 @@ var (
 	// OpenAI address e.g azure openai service
 	Url = os.Getenv("API_URL")
 	// key for the OpenAI API
-	Key = os.Getenv("API_KEY")
+	Key = os.Getenv("OPENAI_OPENAI_API_URL")
 	// Address of the http server
 	Address = os.Getenv("ADDRESS")
 	// Infrastructure settings
@@ -26,7 +26,7 @@ var (
 func main() {
 	// proxy api configuration
 	if len(Key) == 0 {
-		log.Print("missing API_KEY")
+		log.Print("missing OPENAI_OPENAI_API_URL")
 		os.Exit(1)
 	}
 

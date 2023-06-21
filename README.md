@@ -40,10 +40,10 @@ go build -o turbo ./main.go
 
 ### API
 
-Requires an API key as env var `API_KEY` for access to OpenAI.
+Requires an API key as env var `OPENAI_OPENAI_API_URL` for access to OpenAI.
 
 ```
-API_KEY=xxx turbo
+OPENAI_OPENAI_API_URL=xxx turbo
 ```
 
 Runs on 8080, proxies `/v1/*` to OpenAI verbatim
@@ -56,7 +56,7 @@ See [OpenAI API reference](https://platform.openai.com/docs/api-reference/comple
 
 #### Azure OpenAI
 
-To use Azure's OpenAI service, provide the `API_URL` environment variable in addition to the `API_KEY`
+To use Azure's OpenAI service, provide the `API_URL` environment variable in addition to the `OPENAI_OPENAI_API_URL`
 
 ```
 API_URL=https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01

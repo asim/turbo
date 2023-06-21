@@ -8,9 +8,9 @@ import (
 )
 
 func TestComplete(t *testing.T) {
-	apiKey := os.Getenv("OPENAI_API_KEY")
+	apiKey := os.Getenv("OPENAI_OPENAI_API_KEY")
 	if apiKey == "" {
-		t.Skip("OPENAI_API_KEY env var not set")
+		t.Skip("OPENAI_OPENAI_API_KEY env var not set")
 	}
 
 	err := Set(apiKey, DefaultURL)
@@ -25,9 +25,9 @@ func TestComplete(t *testing.T) {
 }
 
 func TestStream(t *testing.T) {
-	apiKey := os.Getenv("OPENAI_API_KEY")
+	apiKey := os.Getenv("OPENAI_OPENAI_API_KEY")
 	if apiKey == "" {
-		t.Skip("OPENAI_API_KEY env var not set")
+		t.Skip("OPENAI_OPENAI_API_KEY env var not set")
 	}
 
 	err := Set(apiKey, DefaultURL)
