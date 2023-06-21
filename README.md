@@ -23,7 +23,7 @@ Proxy GPT is an API backend with AI built-in. Create users, groups and chats, pe
 - [API](#api)
 - [Auth](#auth)
 - [Admin](#admin)
-- [Context](#context)
+- [Caching](#caching)
 - [Database](#database)
 - [User API](#user-api)
 - [Chat API](#chat-api)
@@ -118,7 +118,7 @@ Reset password
 admin reset foobar Password1
 ```
 
-### Context
+### Caching
 
 Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
 the `context` field set to an integer above 0. The cache is built from the database of prior messages if no context is in 
