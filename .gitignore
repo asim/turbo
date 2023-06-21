@@ -1,5 +1,5 @@
 proxy.db
 proxy.db-journal
-turbo
+./turbo
 proxy.log
 .env
