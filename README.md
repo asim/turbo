@@ -120,6 +120,8 @@ Reset password
 admin reset foobar Password1
 ```
 
+For the full list of commands see [cmd/admin](https://github.com/asim/turbo/tree/master/cmd/admin).
+
 ### Caching
 
 Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
