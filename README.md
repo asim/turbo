@@ -38,12 +38,14 @@ Built as a Go binary
 go build -o turbo ./main.go
 ```
 
-### API
+### AI
 
-Requires an API key as env var `OPENAI_OPENAI_API_URL` for access to OpenAI.
+Use OpenAI through a shared proxy.
+
+Requires an API key as env var `OPENAI_API_KEY` for access to OpenAI.
 
 ```
-OPENAI_OPENAI_API_URL=xxx turbo
+OPENAI_API_KEY=xxx turbo
 ```
 
 Runs on 8080, proxies `/v1/*` to OpenAI verbatim
@@ -56,22 +58,22 @@ See [OpenAI API reference](https://platform.openai.com/docs/api-reference/comple
 
 #### Azure OpenAI
 
-To use Azure's OpenAI service, provide the `API_URL` environment variable in addition to the `OPENAI_OPENAI_API_URL`
+To use Azure's OpenAI service, provide the `OPENAI_API_URL` environment variable in addition to the `OPENAI_API_KEY`
 
 ```
-API_URL=https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01
+OPENAI_API_URL=https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01
 ```
 
 See [Azure OpenAI Reference](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference)
 
 #### Custom URL
 
-To use a custom url that supports the OpenAI API specify the `API_URL` as mentioned above for azure
+To use a custom url that supports the OpenAI API specify the `OPENAI_API_URL` as mentioned above for azure
 
 e.g custom local mocked LLM proxy
 
 ```
-API_URL=http://localhost:9090
+OPENAI_API_URL=http://localhost:9090
 ```
 
 ### Auth
