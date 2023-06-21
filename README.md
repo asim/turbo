@@ -1,6 +1,6 @@
 # Proxy GPT
 
-Proxy for OpenAI
+Turbocharge your API backend with AI
 
 ## Overview
 
