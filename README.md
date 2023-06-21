@@ -4,7 +4,7 @@ Turbocharge your API backend with AI
 
 ## Overview
 
-Proxy GPT is a shared API backend for OpenAI. It enables you to create users, groups and chats, perform signup and authentication. It includes a chat API for prompting and streaming responses. All requests are forwarded using a shared key. Requests are logged in a database for filtering, auditing, etc. 
+Proxy GPT is an API backend with AI built-in. It enables you to create users, groups and chats, perform signup and authentication and includes a chat API for prompting and streaming responses from ChatGPT. All requests are forwarded using a shared key. Requests are logged in a database for filtering, auditing, etc. 
 
 ## Features
 
