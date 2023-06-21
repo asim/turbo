@@ -27,7 +27,7 @@ echo "Starting proxy"
 echo "Running tests"
 
 if ! [ -f ./turbo ]; then
-	go build -o ./turbo main.go
+	go build -o ./turbo ./cmd/turbo/main.go
 fi
 
 # run proxy

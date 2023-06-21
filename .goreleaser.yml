@@ -9,6 +9,7 @@ before:
     - go mod download
 builds:
 - binary: turbo
+  main: ./cmd/turbo
   env:
     - CGO_ENABLED=0
     - GO111MODULE=on

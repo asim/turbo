@@ -9,7 +9,7 @@ IMAGE_TAG=$(GIT_TAG)-$(GIT_COMMIT)
 all: build
 
 build:
-	go build -a -installsuffix cgo -o $(NAME)
+	go build -a -installsuffix cgo -o $(NAME) ./cmd/turbo/main.go
 
 docker:
 	docker buildx build --platform linux/amd64 --platform linux/arm64 --tag $(IMAGE_NAME):$(IMAGE_TAG) --tag $(IMAGE_NAME):latest --push .
