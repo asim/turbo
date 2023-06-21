@@ -10,7 +10,7 @@ Turbo is an API backend with AI built-in. Create users, groups and chats, perfor
 
 - OpenAI shared proxy
 - User authentication
-- 1:1 and 1:N Chat API
+- 1:1 and group chat API
 - SQLite or Postgres storage
 - In-memory or Redis caching
 - Proxy request and event log
