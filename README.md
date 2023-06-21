@@ -35,7 +35,19 @@ Turbo is an API backend with AI built-in. Create users, groups and chats, perfor
 Built as a Go binary
 
 ```
-go build -o turbo ./main.go
+go build -o turbo ./cmd/turbo/main.go
+```
+
+Using docker
+
+```
+docker build -t turbo .
+```
+
+Using make
+
+```
+make build
 ```
 
 ### AI
