@@ -20,7 +20,7 @@ Turbo is an API backend with AI built-in. Create users, groups and chats, perfor
 ## Usage
 
 - [Install](#install)
-- [API](#api)
+- [AI](#ai)
 - [Auth](#auth)
 - [Admin](#admin)
 - [Caching](#caching)
