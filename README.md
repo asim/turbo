@@ -1,6 +1,6 @@
 # 🌀 Turbo
 
-Turbocharge your backend with AI
+Turbocharge your app with AI
 
 ## Overview
 
