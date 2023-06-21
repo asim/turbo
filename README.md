@@ -1,4 +1,4 @@
-# Turbo
+# Turbo 🌀
 
 Turbocharge your API backend with AI
 
