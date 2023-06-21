@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/asim/proxy-gpt/db"
+	"github.com/asim/turbo/db"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -21,7 +21,7 @@ type Group struct {
 type GroupMember struct {
 	gorm.Model
 	GroupID string `json:"group_id" gorm:"index:idx_group_member_group_user"`
-	UserID string `json:"user_id" gorm:"index:idx_group_member_group_user"`
+	UserID  string `json:"user_id" gorm:"index:idx_group_member_group_user"`
 }
 
 // GroupIndexRequest for group/index
@@ -64,7 +64,7 @@ type GroupUpdateResponse struct {
 
 type GroupMembersInviteRequest struct {
 	Username string `json:"username" valid:"required,length(6|254)"`
-	GroupID   string `json:"group_id" valid:"required,length(1|254)"`
+	GroupID  string `json:"group_id" valid:"required,length(1|254)"`
 }
 
 type GroupMembersInviteResponse struct{}
@@ -342,7 +342,7 @@ func GroupMembersAdd(w http.ResponseWriter, r *http.Request) {
 	for _, userID := range req.UserIDs {
 		groupMember := GroupMember{
 			GroupID: group.ID,
-			UserID: userID,
+			UserID:  userID,
 		}
 
 		if err := db.Create(&groupMember).Error; err != nil {
@@ -493,7 +493,7 @@ func CreateGroup(group *Group) error {
 
 	groupMember := GroupMember{
 		GroupID: group.ID,
-		UserID: group.OwnerID,
+		UserID:  group.OwnerID,
 	}
 
 	if err := db.Create(&groupMember).Error; err != nil {

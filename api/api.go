@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/event"
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/event"
+	"github.com/asim/turbo/log"
 	"github.com/google/uuid"
 )
 

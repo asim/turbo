@@ -7,9 +7,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/log"
-	"github.com/asim/proxy-gpt/util"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/log"
+	"github.com/asim/turbo/util"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -26,12 +26,12 @@ type UserSessionResponse struct {
 type User struct {
 	// TODO: gorm validation
 	gorm.Model
-	ID        string `json:"id" valid:"required"`
-	FirstName string `json:"first_name" valid:"length(1|30)"`
-	LastName  string `json:"last_name" valid:"length(1|30)"`
-	Username  string `json:"username" valid:"required,username,length(6|254)" gorm:"unique_index;not null"`
-	Password  string `json:"-"`
-	Groups     []Group `json:"groups" gorm:"many2many:user_groups;"`
+	ID        string  `json:"id" valid:"required"`
+	FirstName string  `json:"first_name" valid:"length(1|30)"`
+	LastName  string  `json:"last_name" valid:"length(1|30)"`
+	Username  string  `json:"username" valid:"required,username,length(6|254)" gorm:"unique_index;not null"`
+	Password  string  `json:"-"`
+	Groups    []Group `json:"groups" gorm:"many2many:user_groups;"`
 }
 
 // UserIndexRequest for user/index
@@ -53,7 +53,7 @@ type UserSignupRequest struct {
 	LastName  string `json:"last_name,omitempty"`
 	Username  string `json:"username" valid:"required,length(1|254)" gorm:"unique_index;not null"`
 	Password  string `json:"password" valid:"required"`
-	GroupName  string `json:"group_name,omitempty"`
+	GroupName string `json:"group_name,omitempty"`
 }
 
 // UserSignupResponse for user/register
@@ -505,7 +505,7 @@ func UserSignup(w http.ResponseWriter, r *http.Request) {
 	// create group member
 	if err := AddUserToGroup(&GroupMember{
 		GroupID: group.ID,
-		UserID: group.OwnerID,
+		UserID:  group.OwnerID,
 	}); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

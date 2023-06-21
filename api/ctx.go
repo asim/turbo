@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/asim/proxy-gpt/ai"
-	"github.com/asim/proxy-gpt/cache"
-	"github.com/asim/proxy-gpt/db"
+	"github.com/asim/turbo/ai"
+	"github.com/asim/turbo/cache"
+	"github.com/asim/turbo/db"
 )
 
 // saveContext is what we need to maintain our context cache

@@ -1,8 +1,8 @@
-NAME=proxy-gpt
+NAME=turbo
 IMAGE_NAME=asim/$(NAME)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(shell git describe --abbrev=0 --tags --always --match "v*")
-GIT_IMPORT=github.com/asim/proxy-gpt
+GIT_IMPORT=github.com/asim/turbo
 BUILD_DATE=$(shell date +%s)
 IMAGE_TAG=$(GIT_TAG)-$(GIT_COMMIT)
 
@@ -21,6 +21,6 @@ test: vet
 	go test -v ./...
 
 clean:
-	rm -rf ./proxy-gpt
+	rm -rf ./turbo
 
 .PHONY: build clean vet test docker

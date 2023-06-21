@@ -1,5 +1,5 @@
 proxy.db
 proxy.db-journal
-proxy-gpt
+turbo
 proxy.log
 .env

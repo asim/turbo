@@ -1,10 +1,10 @@
-# Proxy GPT
+# Turbo
 
 Turbocharge your API backend with AI
 
 ## Overview
 
-Proxy GPT is an API backend with AI built-in. Create users, groups and chats, perform signup and authentication, including prompt/streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Events are stored in the database for filtering & auditing.
+Turbo is an API backend with AI built-in. Create users, groups and chats, perform signup and authentication, including prompt/streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Events are stored in the database for filtering & auditing.
 
 ## Features
 
@@ -35,7 +35,7 @@ Proxy GPT is an API backend with AI built-in. Create users, groups and chats, pe
 Built as a Go binary
 
 ```
-go build -o proxy-gpt ./main.go
+go build -o turbo ./main.go
 ```
 
 ### API
@@ -43,7 +43,7 @@ go build -o proxy-gpt ./main.go
 Requires an API key as env var `API_KEY` for access to OpenAI.
 
 ```
-API_KEY=xxx proxy-gpt
+API_KEY=xxx turbo
 ```
 
 Runs on 8080, proxies `/v1/*` to OpenAI verbatim

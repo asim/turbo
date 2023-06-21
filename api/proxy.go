@@ -14,8 +14,8 @@ import (
 	"time"
 
 	valid "github.com/asaskevich/govalidator"
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/log"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/acme/autocert"
 	"gorm.io/gorm"
@@ -275,7 +275,7 @@ func (p *Proxy) Run(address string, hd http.Handler) error {
 	// serve tls
 	if address == ":443" {
 		m := &autocert.Manager{
-			Cache:  autocert.DirCache(".proxy-gpt"),
+			Cache:  autocert.DirCache(".turbo"),
 			Prompt: autocert.AcceptTOS,
 			Email:  "support@example.com",
 		}

@@ -1,4 +1,4 @@
-module github.com/asim/proxy-gpt
+module github.com/asim/turbo
 
 go 1.20
 

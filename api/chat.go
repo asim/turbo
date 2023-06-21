@@ -12,10 +12,10 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/asim/proxy-gpt/ai"
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/event"
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/ai"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/event"
+	"github.com/asim/turbo/log"
 	"github.com/google/uuid"
 )
 
@@ -27,29 +27,29 @@ var (
 // Chat is the base type for a conversation
 type Chat struct {
 	gorm.Model
-	ID     string `json:"id" valid:"required" gorm:"index:idx_chat_user,priority:2"`
-	Name   string `json:"name" valid:"required"` // name of the chat given by the user
-	LLM    string `json:"model" valid:"required"`
-	UserID string `json:"user_id" gorm:"index:idx_chat_user,priority:1"`
+	ID      string `json:"id" valid:"required" gorm:"index:idx_chat_user,priority:2"`
+	Name    string `json:"name" valid:"required"` // name of the chat given by the user
+	LLM     string `json:"model" valid:"required"`
+	UserID  string `json:"user_id" gorm:"index:idx_chat_user,priority:1"`
 	GroupID string `json:"group_id" gorm:"index"` // TODO new composite index with user
 }
 
 // Message represents the messages in a Chat
 type Message struct {
 	gorm.Model
-	ID     string `json:"id" valid:"required"`
-	ChatID string `json:"chat_id" gorm:"index:idx_chat_message,priority:2"`
-	UserID string `json:"user_id" gorm:"index:idx_chat_message,priority:1"`
+	ID      string `json:"id" valid:"required"`
+	ChatID  string `json:"chat_id" gorm:"index:idx_chat_message,priority:2"`
+	UserID  string `json:"user_id" gorm:"index:idx_chat_message,priority:1"`
 	GroupID string `json:"group_id" gorm:"index"`
-	Prompt string `json:"prompt"`
-	Reply  string `json:"reply"`
-	LLM    string `json:"model"`
-	OTR    bool   `json:"otr"`
+	Prompt  string `json:"prompt"`
+	Reply   string `json:"reply"`
+	LLM     string `json:"model"`
+	OTR     bool   `json:"otr"`
 }
 
 type ChatCreateRequest struct {
-	Name   string `json:"name" valid:"required"`
-	Model  string `json:"model" valid:"required"`
+	Name    string `json:"name" valid:"required"`
+	Model   string `json:"model" valid:"required"`
 	GroupID string `json:"group_id"`
 }
 
@@ -217,11 +217,11 @@ func ChatCreate(w http.ResponseWriter, r *http.Request) {
 
 	// create a chat,
 	chat := &Chat{
-		ID:     uuid.New().String(),
-		Name:   cc.Name,
-		LLM:    cc.Model,
+		ID:      uuid.New().String(),
+		Name:    cc.Name,
+		LLM:     cc.Model,
 		GroupID: group.ID,
-		UserID: sess.UserID,
+		UserID:  sess.UserID,
 	}
 
 	// create the chat
@@ -621,13 +621,13 @@ func ChatPrompt(w http.ResponseWriter, r *http.Request) {
 
 	// define the message
 	m := &Message{
-		ID:     uuid.New().String(),
-		Prompt: prompt,
-		ChatID: chatID,
-		UserID: sess.UserID,
+		ID:      uuid.New().String(),
+		Prompt:  prompt,
+		ChatID:  chatID,
+		UserID:  sess.UserID,
 		GroupID: chat.GroupID,
-		LLM:    chat.LLM,
-		OTR:    c.OTR,
+		LLM:     chat.LLM,
+		OTR:     c.OTR,
 	}
 
 	// with the stream we have to wait

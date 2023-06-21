@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/log"
 	"github.com/sashabaranov/go-openai"
 )
 

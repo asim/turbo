@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/asim/proxy-gpt/api"
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/util"
+	"github.com/asim/turbo/api"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/util"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

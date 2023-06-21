@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/asim/proxy-gpt/event"
+	"github.com/asim/turbo/event"
 	"github.com/gorilla/websocket"
 )
 

@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/asim/proxy-gpt/ai"
-	"github.com/asim/proxy-gpt/api"
-	"github.com/asim/proxy-gpt/cache"
-	"github.com/asim/proxy-gpt/db"
-	"github.com/asim/proxy-gpt/event"
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/ai"
+	"github.com/asim/turbo/api"
+	"github.com/asim/turbo/cache"
+	"github.com/asim/turbo/db"
+	"github.com/asim/turbo/event"
+	"github.com/asim/turbo/log"
 )
 
 var (

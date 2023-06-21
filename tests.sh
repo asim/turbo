@@ -26,12 +26,12 @@ echo "Starting proxy"
 
 echo "Running tests"
 
-if ! [ -f ./proxy-gpt ]; then
-	go build -o ./proxy-gpt main.go
+if ! [ -f ./turbo ]; then
+	go build -o ./turbo main.go
 fi
 
 # run proxy
-API_KEY=$KEY ./proxy-gpt &
+API_KEY=$KEY ./turbo &
 PID=$!
 
 # sleep
@@ -56,4 +56,4 @@ testApi /user/logout "{}"
 
 # cleanup
 kill -9 $PID
-rm -f ./proxy-gpt
+rm -f ./turbo

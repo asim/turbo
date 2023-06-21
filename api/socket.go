@@ -9,8 +9,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/asim/proxy-gpt/event"
-	"github.com/asim/proxy-gpt/log"
+	"github.com/asim/turbo/event"
+	"github.com/asim/turbo/log"
 	"github.com/gorilla/websocket"
 )
 
