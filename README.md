@@ -1,14 +1,15 @@
 # 🌀 Turbo
 
-Turbocharge your app with AI
+Turbocharge your app development
 
 ## Overview
 
-Turbo is an API backend with AI built-in. Create users, groups and chats, perform signup and authentication, including prompt/streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Events are stored in the database for filtering & auditing.
+Turbo is a Go app development framework. Create users, groups and chats, perform signup and authentication, including prompt/streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Events are stored in the database for filtering & auditing.
 
 ## Features
 
-- OpenAI shared proxy
+- OpenAI API proxy
+- App dev framework
 - User management API
 - 1:1 and group chat API
 - SQLite or Postgres storage
