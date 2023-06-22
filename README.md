@@ -228,7 +228,7 @@ Turbo includes pubsub messaging as an `event` package
 Anywhere in your app just call event.Publish
 
 ```go
-import "github.com/asim/turbo"
+import "github.com/asim/turbo/event"
 
 event.Publish("events", map[string]interface{}{
 	"type": "login",
