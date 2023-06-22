@@ -46,10 +46,10 @@ Using docker
 docker build -t turbo .
 ```
 
-Using make
+Or import directly
 
-```
-make build
+```go
+import "github.com/asim/turbo"
 ```
 
 ### AI
@@ -90,26 +90,6 @@ e.g custom local mocked LLM proxy
 OPENAI_API_URL=http://localhost:9090
 ```
 
-### Auth
-
-The API supports session based authentication using a `sess` cookie header or `Authorization: Bearer $TOKEN` header.
-
-Example of an API call using authentication header
-
-```
-curl -H 'Authorization: Bearer ZDU0Nzg5ZTctMzRkMy00ZmNlLTkyYTgtZTQwYzIxZDE1YWJm' \
-http://localhost:8080/v1/models
-```
-
-Example of a cookie based call
-
-```
-curl --cookie 'sess=ZDU0Nzg5ZTctMzRkMy00ZmNlLTkyYTgtZTQwYzIxZDE1YWJm' \
-http://localhost:8080/v1/models
-```
-
-See the [User API](#user-api) section for more on signup, login, etc.
-
 ### App
 
 The app can be run either using turbo proxy or as a framework
@@ -147,6 +127,26 @@ func main() {
         app.Run()
 }
 ```
+
+### Auth
+
+The API supports session based authentication using a `sess` cookie header or `Authorization: Bearer $TOKEN` header.
+
+Example of an API call using authentication header
+
+```
+curl -H 'Authorization: Bearer ZDU0Nzg5ZTctMzRkMy00ZmNlLTkyYTgtZTQwYzIxZDE1YWJm' \
+http://localhost:8080/v1/models
+```
+
+Example of a cookie based call
+
+```
+curl --cookie 'sess=ZDU0Nzg5ZTctMzRkMy00ZmNlLTkyYTgtZTQwYzIxZDE1YWJm' \
+http://localhost:8080/v1/models
+```
+
+See the [User API](#user-api) section for more on signup, login, etc.
 
 ### Admin
 
