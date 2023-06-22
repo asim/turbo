@@ -27,6 +27,7 @@ Turbo is a Go app development framework. Create users, groups and chats, perform
 - [Admin](#admin)
 - [Caching](#caching)
 - [Database](#database)
+- [Messaging](#messaging)
 - [User API](#user-api)
 - [Chat API](#chat-api)
 - [Group API](#group-api)
@@ -218,6 +219,36 @@ GRANT ALL ON SCHEMA public to turbo;
 - group_members - group members by id
 - users - user login information
 - sessions - current login sessions
+
+### Messaging
+
+Turbo includes pubsub messaging as an `event` package
+
+
+Anywhere in your app just call event.Publish
+
+```go
+import "github.com/asim/turbo"
+
+event.Publish("events", map[string]interface{}{
+	"type": "login",
+	"user": "1",
+	"time": time.Now().String(),
+})
+```
+
+Use the subscribe method to get a subscription
+
+```go
+sub, err := event.Subscribe("events")
+
+
+var ev map[string]interface{}
+
+err = sub.Next(context.TODO(), &ev)
+```
+
+Event API coming soon...
 
 ### User API
 
