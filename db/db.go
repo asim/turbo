@@ -36,11 +36,14 @@ func Init(addr string) error {
 	return nil
 }
 
-func Migrate(vals ...interface{}) {
+func Migrate(vals ...interface{}) error {
 	for _, v := range vals {
 		// TODO: return error
-		DB.AutoMigrate(v)
+		if err := DB.AutoMigrate(v); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func Model(val interface{}) *gorm.DB {
