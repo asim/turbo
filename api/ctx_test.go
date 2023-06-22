@@ -12,7 +12,7 @@ import (
 )
 
 func cleanup() {
-	os.Remove("proxy.db")
+	os.Remove("turbo.db")
 }
 
 func TestSaveAndGetContext(t *testing.T) {

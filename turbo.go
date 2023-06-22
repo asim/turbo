@@ -39,8 +39,10 @@ func (a *App) Migrate(vals ...interface{}) error {
 }
 
 // Register api routes as endpoint/handler e.g /foobar is the key
-func (a *App) Register(routes map[string]http.HandlerFunc) {
-	a.Proxy.Register(routes)
+func (a *App) Register(path string, handler http.HandlerFunc) {
+	a.Proxy.Register(map[string]http.HandlerFunc{
+		path: handler,
+	})
 }
 
 // Run the app on the given address e.g Run(":8080")
@@ -51,6 +53,8 @@ func (a *App) Run() {
 	}
 
 	// run the api
+	log.Print("Running on", Address)
+
 	if err := a.Proxy.Run(Address, a.Handler); err != nil {
 		log.Fatal(err)
 	}
@@ -58,12 +62,6 @@ func (a *App) Run() {
 
 // Create a new turbo app
 func New() *App {
-	// proxy api configuration
-	if len(Key) == 0 {
-		log.Print("missing OPENAI_API_KEY")
-		os.Exit(1)
-	}
-
 	// set the default api url
 	if len(Url) == 0 {
 		Url = ai.DefaultURL
@@ -82,6 +80,9 @@ func New() *App {
 		Key: Key,
 		Url: Url,
 	})
+
+	// register api routes
+	prx.Register(api.Routes)
 
 	// set the proxy
 	app.Proxy = prx
@@ -110,9 +111,6 @@ func New() *App {
 	cache.Init(Redis)
 	// setup events
 	event.Init(Redis)
-
-	// register api routes
-	app.Register(api.Routes)
 
 	// setup openai
 	if err := ai.Set(Key, Url); err != nil {

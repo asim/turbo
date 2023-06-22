@@ -21,6 +21,7 @@ Turbo is an API backend with AI built-in. Create users, groups and chats, perfor
 
 - [Install](#install)
 - [AI](#ai)
+- [App](#app)
 - [Auth](#auth)
 - [Admin](#admin)
 - [Caching](#caching)
@@ -107,6 +108,44 @@ http://localhost:8080/v1/models
 ```
 
 See the [User API](#user-api) section for more on signup, login, etc.
+
+### App
+
+The app can be run either using turbo proxy or as a framework
+
+Example of using it as a proxy
+
+```
+# Starts on :8080
+./turbo
+```
+
+Using it as a framework
+
+```go
+package main
+
+import (
+        "net/http"
+
+        "github.com/asim/turbo"
+)
+
+func Index(w http.ResponseWriter, r *http.Request) {
+        w.Write([]byte(`<html><body><h1>Hello!</h1></body></html>`))
+}
+
+func main() {
+        // create a new app
+        app := turbo.New()
+
+        // register an endpoint
+        app.Register("/", Index)
+
+        // run the app
+        app.Run()
+}
+```
 
 ### Admin
 

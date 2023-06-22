@@ -21,7 +21,7 @@ func Init(addr string) error {
 	var err error
 
 	if len(addr) == 0 {
-		db, err = gorm.Open(sqlite.Open("proxy.db"), &gorm.Config{})
+		db, err = gorm.Open(sqlite.Open("turbo.db"), &gorm.Config{})
 	} else {
 		// postgress url format: "postgres://user:pass@localhost:5432/proxy"
 		db, err = gorm.Open(postgres.Open(addr), &gorm.Config{})

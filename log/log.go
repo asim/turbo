@@ -10,12 +10,10 @@ type Fields = log.Fields
 
 func Init() {
 	// Set up a file logger
-	f, err := os.OpenFile("proxy.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("turbo.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer f.Close()
-
 	log.SetOutput(f)
 	log.SetFormatter(&log.TextFormatter{})
 }
