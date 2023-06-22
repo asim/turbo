@@ -1,6 +1,6 @@
-# Turbo 🌀
+# 🌀 Turbo
 
-Turbocharge your backend with AI
+Turbocharge your app with AI
 
 ## Overview
 
@@ -35,7 +35,19 @@ Turbo is an API backend with AI built-in. Create users, groups and chats, perfor
 Built as a Go binary
 
 ```
-go build -o turbo ./main.go
+go build -o turbo ./cmd/turbo/main.go
+```
+
+Using docker
+
+```
+docker build -t turbo .
+```
+
+Using make
+
+```
+make build
 ```
 
 ### AI
@@ -147,13 +159,13 @@ DB_ADDRESS=postgresql://user:pass@localhost:5432/proxy
 
 #### Privileges
 
-Requires the following privileges assuming db user is `gptio`
+Requires the following privileges assuming db user is `turbo`
 
 ```
-create database proxy;
-create user gptio with encrypted password 'foobar';
-grant all privileges on database proxy to gptio;
-GRANT ALL ON SCHEMA public to gptio;
+create database turbodb;
+create user turbo with encrypted password 'foobar';
+grant all privileges on database turbodb to turbo;
+GRANT ALL ON SCHEMA public to turbo;
 ```
 
 #### Tables
