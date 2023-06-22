@@ -4,7 +4,7 @@ Turbocharge your app development
 
 ## Overview
 
-Turbo is a Go app development framework. Create users, groups and chats, perform signup and authentication, including prompt/streaming responses from ChatGPT. All requests are forwarded using a shared key with context caching included by default. Events are stored in the database for filtering & auditing.
+Turbo is a Go app development framework. It's a batteries included experience with built-in APIs for user and group management, AI chat prompt/streaming, local database storage, in-memory caching and much more. It looks to streamline development of modular monolithic apps by baking in the most needed features. 
 
 ## Features
 
