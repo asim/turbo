@@ -32,6 +32,14 @@ type App struct {
 	Handler http.Handler
 }
 
+// A http endpoint
+type Endpoint struct {
+	// The http handler
+	Handler http.HandlerFunc
+	// Whether it's authenticated
+	Private bool
+}
+
 // Perform a database migration
 func (a *App) Migrate(vals ...interface{}) error {
 	// migrate the user vals
@@ -39,10 +47,14 @@ func (a *App) Migrate(vals ...interface{}) error {
 }
 
 // Register api routes as endpoint/handler e.g /foobar is the key
-func (a *App) Register(path string, handler http.HandlerFunc) {
+func (a *App) Register(path string, ep Endpoint) {
 	a.Proxy.Register(map[string]http.HandlerFunc{
-		path: handler,
+		path: ep.Handler,
 	})
+	if !ep.Private {
+		// add to the excludes
+		api.Excludes = append(api.Excludes, path)
+	}
 }
 
 // Run the app on the given address e.g Run(":8080")

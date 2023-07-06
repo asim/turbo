@@ -122,7 +122,10 @@ func main() {
         app := turbo.New()
 
         // register an endpoint
-        app.Register("/", Index)
+        app.Register("/", turbo.Endpoint{
+		Handler: Index,
+		Private: false,
+	})
 
         // run the app
         app.Run()
