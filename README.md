@@ -100,7 +100,19 @@ response, err := ai.Complete("Who are you?", "user-1")
 if err != nil {
     fmt.Println(err)
 }
+
 fmt.Println(response)
+```
+
+#### Stream
+
+```go
+words, err := ai.Complete("Who are you?", "user-1")
+
+
+for _, word := range words {
+    fmt.Println(words)
+}
 ```
 
 ### App
@@ -254,6 +266,32 @@ GRANT ALL ON SCHEMA public to turbo;
 - group_members - group members by id
 - users - user login information
 - sessions - current login sessions
+
+
+Database usage
+
+```go
+import "github.com/asim/turbo/db"
+
+type Person struct {
+	Name string
+	Age int
+}
+
+// create a record
+err := db.Create(&Person{
+	Name: "Asim",
+	Age: 21,
+})
+
+// lookup record
+var person Person
+
+err = db.Where("age == ?", 21).Find(&person).Error
+
+// Delete record
+err = db.Delete(person)
+```
 
 ### Messaging
 
