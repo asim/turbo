@@ -57,11 +57,15 @@ import "github.com/asim/turbo"
 
 Use OpenAI through a shared proxy.
 
+#### API KEY
+
 Requires an API key as env var `OPENAI_API_KEY` for access to OpenAI.
 
 ```
 OPENAI_API_KEY=xxx turbo
 ```
+
+#### Proxy
 
 Runs on 8080, proxies `/v1/*` to OpenAI verbatim
 
@@ -71,7 +75,7 @@ curl http://localhost:8080/v1/models
 
 See [OpenAI API reference](https://platform.openai.com/docs/api-reference/completions) for details
 
-#### Azure OpenAI
+#### Azure
 
 To use Azure's OpenAI service, provide the `OPENAI_API_URL` environment variable in addition to the `OPENAI_API_KEY`
 
