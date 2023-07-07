@@ -262,13 +262,14 @@ err = cache.Delete(key)
 
 ### Database
 
-Events are stored in a database. Sqlite is used by default (local proxy.db file).
-
-To use Postgres specify the URL as `DB_ADDRESS` env var
+A builtin database via SQLite enables persisting any CRUD data. It defaults to a local `./turbo.db` file. This can easily
+be swapped out with Postgres at any time. To use Postgres specify the URL as `DB_ADDRESS` env var.
 
 ```
 DB_ADDRESS=postgresql://user:pass@localhost:5432/proxy
 ```
+
+Proxy events and chat related data are also stored in the database. See below for more info.
 
 #### Privileges
 
@@ -283,6 +284,8 @@ GRANT ALL ON SCHEMA public to turbo;
 
 #### Tables
 
+The tables persisted by the chat api
+
 - chats - stores the chat history
 - chat_users - users in the chat by id
 - events - proxy events/requests/login/etc
@@ -293,7 +296,9 @@ GRANT ALL ON SCHEMA public to turbo;
 - sessions - current login sessions
 
 
-#### DB usage
+#### Package
+
+Using the DB as a package
 
 ```go
 import "github.com/asim/turbo/db"
@@ -324,7 +329,6 @@ err = db.Delete(person)
 ### Messaging
 
 Turbo includes pubsub messaging as an `event` package
-
 
 Anywhere in your app just call event.Publish
 
