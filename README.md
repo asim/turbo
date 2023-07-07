@@ -293,7 +293,7 @@ GRANT ALL ON SCHEMA public to turbo;
 - sessions - current login sessions
 
 
-Database usage
+#### DB usage
 
 ```go
 import "github.com/asim/turbo/db"
