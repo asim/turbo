@@ -284,7 +284,7 @@ GRANT ALL ON SCHEMA public to turbo;
 
 #### Tables
 
-The tables persisted by the chat api
+The tables persisted by the turbo api
 
 - chats - stores the chat history
 - chat_users - users in the chat by id
