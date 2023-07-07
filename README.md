@@ -75,16 +75,6 @@ curl http://localhost:8080/v1/models
 
 See [OpenAI API reference](https://platform.openai.com/docs/api-reference/completions) for details
 
-#### Azure
-
-To use Azure's OpenAI service, provide the `OPENAI_API_URL` environment variable in addition to the `OPENAI_API_KEY`
-
-```
-OPENAI_API_URL=https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/completions?api-version=2022-12-01
-```
-
-See [Azure OpenAI Reference](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference)
-
 #### Custom URL
 
 To use a custom url that supports the OpenAI API specify the `OPENAI_API_URL` as mentioned above for azure
