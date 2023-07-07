@@ -228,10 +228,6 @@ For the full list of commands see [cmd/admin](https://github.com/asim/turbo/tree
 
 ### Caching
 
-Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
-the `context` field set to an integer above 0. The cache is built from the database of prior messages if no context is in 
-memory. 
-
 Redis can be used as an alternative persistent cache. This will enable horizontally scaling the proxy alongside the use of 
 the external database like postgres. To do so specify the `REDIS_ADDRESS` env var with the connection string.
 
@@ -485,6 +481,12 @@ Stream message format
   "partial": true
 }
 ```
+
+### Context Caching
+
+Context is cached in memory by default for up-to 10 prior prompts. This can be modified by request to `/chat/prompt` with 
+the `context` field set to an integer above 0. The cache is built from the database of prior messages if no context is in 
+memory. Context can be persisted by setting Redis as the cache system. See the [cache](#cache) section for more details.
 
 ### Off the record
 
