@@ -353,6 +353,8 @@ var ev map[string]interface{}
 err = sub.Next(context.TODO(), &ev)
 ```
 
+If redis is specified via `REDIS_ADDRESS` then the event package will make use of redis pubsub to horizontally scale.
+
 Event API coming soon...
 
 ### User API
