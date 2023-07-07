@@ -91,6 +91,18 @@ e.g custom local mocked LLM proxy
 OPENAI_API_URL=http://localhost:9090
 ```
 
+#### Completion
+
+```go
+import "github.com/asim/turbo/ai"
+
+response, err := ai.Complete("Who are you?", "user-1")
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println(response)
+```
+
 ### App
 
 The app can be run either using turbo proxy or as a framework
