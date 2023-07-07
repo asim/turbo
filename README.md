@@ -278,8 +278,11 @@ type Person struct {
 	Age int
 }
 
+// db migration 
+err := db.Migrate(&Person{})
+
 // create a record
-err := db.Create(&Person{
+err = db.Create(&Person{
 	Name: "Asim",
 	Age: 21,
 })
