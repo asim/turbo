@@ -203,6 +203,26 @@ the external database like postgres. To do so specify the `REDIS_ADDRESS` env va
 REDIS_ADDRESS=redis://localhost:6379
 ```
 
+Import and use get/set/delete
+
+```go
+import "github.com/asim/turbo/cache"
+
+key := "key"
+val := "value"
+
+// set value
+err := cache.Set(key, val)
+
+// get value
+var value string
+
+err = cache.Get(key, &value)
+
+// delete value
+err = cache.Delete(key)
+```
+
 ### Database
 
 Events are stored in a database. Sqlite is used by default (local proxy.db file).
