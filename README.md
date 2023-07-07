@@ -109,7 +109,6 @@ fmt.Println(response)
 ```go
 words, err := ai.Complete("Who are you?", "user-1")
 
-
 for _, word := range words {
     fmt.Println(words)
 }
