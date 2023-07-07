@@ -232,6 +232,7 @@ For the full list of commands see [cmd/admin](https://github.com/asim/turbo/tree
 
 ### Caching
 
+Turbo comes with a builtin in-memory cache. Quickly get/set and forget values that are frequently used. For something external 
 Redis can be used as an alternative persistent cache. This will enable horizontally scaling the proxy alongside the use of 
 the external database like postgres. To do so specify the `REDIS_ADDRESS` env var with the connection string.
 
