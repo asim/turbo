@@ -1,4 +1,4 @@
-# 🌀 Turbo
+# 🌀 Turbo [![Go Reference](https://pkg.go.dev/badge/github.com/asim/turbo.svg)](https://pkg.go.dev/github.com/asim/turbo)
 
 Turbocharge your app development
 
@@ -31,7 +31,7 @@ Turbo is a Go app development framework. It's a batteries included experience wi
 - [User API](#user-api)
 - [Chat API](#chat-api)
 - [Group API](#group-api)
-- [Endpoints](#endpoints)
+- [API Endpoints](#api-endpoints)
 
 ### Install
 
@@ -517,7 +517,7 @@ curl http://localhost:8080/chat/create \
 -d "name=foobar&group_id=group-1"
 ```
 
-## Endpoints
+## API Endpoints
 
 A full list of API endpoints
 
@@ -552,6 +552,8 @@ A full list of API endpoints
 "/user/session":         UserSession,
 "/user/password/update": UserPasswordUpdate,
 ```
+
+Find all the APIs in the [api](https://pkg.go.dev/github.com/asim/turbo/api) package
 
 ### Request Format
 
