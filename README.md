@@ -176,6 +176,31 @@ http://localhost:8080/v1/models
 
 See the [User API](#user-api) section for more on signup, login, etc.
 
+To retrieve session information in your app 
+
+```go
+import "github.com/asim/turbo/api"
+
+// ExampleHandler to show how to get session
+func ExampeHandler(w http.ResponseWriter, r *http.Request) {
+	// attempt to pull user session from context
+	sess, ok := r.Context().Value(api.Session{}).(*api.Session)
+	if !ok {
+		// no session, don't proceed
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	// get username
+	username := sess.Username
+
+	// fmt.Println(username)
+
+	// do stuff
+	return
+}
+```
+
 ### Admin
 
 A user admin command line is available in `cmd/admin`
