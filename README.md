@@ -175,7 +175,7 @@ To retrieve session information in your app
 import "github.com/asim/turbo/api"
 
 // ExampleHandler to show how to get session
-func ExampeHandler(w http.ResponseWriter, r *http.Request) {
+func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 	// attempt to pull user session from context
 	sess, ok := r.Context().Value(api.Session{}).(*api.Session)
 	if !ok {
