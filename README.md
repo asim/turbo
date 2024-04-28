@@ -1,6 +1,6 @@
 # 🌀 Turbo [![Go Reference](https://pkg.go.dev/badge/github.com/asim/turbo.svg)](https://pkg.go.dev/github.com/asim/turbo)
 
-Turbocharge your app development
+Turbocharging Go app development
 
 ## Overview
 
